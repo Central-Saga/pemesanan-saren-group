@@ -5,7 +5,6 @@ namespace App\Livewire\Frontend;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Services\InvoiceService;
-use App\Services\WhatsAppService;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -45,6 +44,14 @@ class CheckoutPage extends Component
         return array_sum(array_column($this->cartItems, 'subtotal'));
     }
 
+    public function removeFromCart(int $index): void
+    {
+        $cart = $this->cartItems;
+        unset($cart[$index]);
+        session()->put('cart', array_values($cart));
+        $this->dispatch('cart-updated');
+    }
+
     public function submitOrder(): void
     {
         $cart = $this->cartItems;
@@ -63,7 +70,6 @@ class CheckoutPage extends Component
 
         $this->validate();
 
-        $waService = app(WhatsAppService::class);
         $invoiceService = app(InvoiceService::class);
 
         $order = DB::transaction(function () use ($cart, $invoiceService) {
@@ -98,12 +104,12 @@ class CheckoutPage extends Component
             return $order;
         });
 
-        $url = $waService->generateOrderSubmissionUrl($order);
-
         session()->forget('cart');
         $this->dispatch('cart-updated');
 
-        $this->redirect($url);
+        // Order is persisted; customer lands on the success page with a WhatsApp
+        // follow-up button instead of being force-redirected out of the app.
+        $this->redirectRoute('order.success', ['invoice' => $order->invoice_number]);
     }
 
     public function render()

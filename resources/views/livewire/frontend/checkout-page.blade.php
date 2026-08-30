@@ -1,96 +1,181 @@
-<div class="max-w-3xl mx-auto space-y-6">
-    <div>
-        <flux:heading size="xl">Checkout</flux:heading>
-        <flux:text>Lengkapi data pemesan, pesanan akan dikirim ke CS kami via WhatsApp.</flux:text>
-    </div>
+<div class="text-zinc-900">
 
     @if(empty($this->cartItems))
-        <flux:card class="py-12 text-center">
-            <flux:heading>Keranjang kosong</flux:heading>
-            <flux:text>Silakan pilih produk dari katalog terlebih dahulu.</flux:text>
-            <flux:button variant="primary" href="{{ route('catalog') }}" wire:navigate class="mt-4">Lihat Katalog</flux:button>
-        </flux:card>
+        {{-- Empty cart --}}
+        <div class="mx-auto max-w-md rounded-xl border border-zinc-200 bg-white p-12 text-center">
+            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-zinc-100">
+                <flux:icon.shopping-cart class="h-7 w-7 text-zinc-300" />
+            </div>
+            <h1 class="mt-4 text-lg font-bold text-zinc-900">Keranjang masih kosong</h1>
+            <p class="mt-1 text-sm text-zinc-500">Pilih produk dari katalog untuk mulai memesan.</p>
+            <a href="{{ route('catalog') }}" wire:navigate
+               class="mt-5 inline-flex items-center gap-2 rounded-md bg-[#FF6B00] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#E65100]">
+                Lihat Katalog
+                <flux:icon.arrow-right class="h-4 w-4" />
+            </a>
+        </div>
     @else
-        <flux:card class="space-y-4">
-            <flux:heading size="lg">Rincian Pesanan</flux:heading>
-            <table class="w-full text-sm">
-                <thead>
-                    <tr class="text-left text-zinc-500 border-b">
-                        <th class="py-2">Produk</th>
-                        <th class="py-2">Qty</th>
-                        <th class="py-2 text-right">Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($this->cartItems as $item)
-                        <tr class="border-b">
-                            <td class="py-2">
-                                {{ $item['product_name'] }}
-                                @if(($item['variant_name'] ?? null))
-                                    <div class="text-xs text-zinc-500">{{ $item['variant_name'] }}</div>
-                                @endif
-                                @if(($item['width_cm'] ?? null))
-                                    <div class="text-xs text-zinc-500">{{ $item['width_cm'] }} × {{ $item['height_cm'] }} cm</div>
-                                @endif
-                            </td>
-                            <td class="py-2">{{ $item['quantity'] }}</td>
-                            <td class="py-2 text-right">Rp {{ number_format($item['subtotal'], 0, ',', '.') }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="2" class="py-2 font-semibold">Total</td>
-                        <td class="py-2 text-right font-bold text-[#FF6B00]">Rp {{ number_format($this->cartTotal, 0, ',', '.') }}</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </flux:card>
+        {{-- Header --}}
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold tracking-tight text-zinc-900 sm:text-[32px] sm:leading-[42px]">Checkout</h1>
+            <p class="mt-1 text-sm text-zinc-500">Lengkapi data untuk finalisasi pesanan.</p>
+        </div>
 
-        <flux:card class="space-y-4">
-            <flux:heading size="lg">Data Pemesan</flux:heading>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-8">
 
-            <flux:field label="Nama Lengkap">
-                <flux:input type="text" wire:model="customerName" />
-                <flux:error name="customerName" />
-            </flux:field>
+            {{-- LEFT : Form --}}
+            <div class="flex flex-col gap-5 md:col-span-7">
 
-            <flux:field label="No. WhatsApp">
-                <flux:input type="text" wire:model="customerPhone" placeholder="08xxxxxxxxxx" />
-                <flux:error name="customerPhone" />
-            </flux:field>
+                {{-- Data Pemesan --}}
+                <section class="rounded-lg border border-zinc-200 bg-white p-6">
+                    <h2 class="mb-4 text-base font-bold text-zinc-900">Data Pemesan</h2>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="mb-1.5 block text-xs font-medium text-zinc-500" for="customerName">Nama Lengkap</label>
+                            <input id="customerName" type="text" wire:model="customerName" placeholder="Nama sesuai KTP / WA"
+                                   class="w-full rounded-md border border-zinc-200 bg-zinc-50 px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-300 outline-none transition focus:border-[#FF6B00] focus:bg-white focus:ring-2 focus:ring-[#FF6B00]/15" />
+                            <flux:error name="customerName" class="mt-1 text-xs text-red-500" />
+                        </div>
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div>
+                                <label class="mb-1.5 block text-xs font-medium text-zinc-500" for="customerPhone">No. WhatsApp</label>
+                                <div class="flex">
+                                    <span class="inline-flex items-center rounded-l-md border border-r-0 border-zinc-200 bg-zinc-100 px-3 font-mono text-sm text-zinc-400">+62</span>
+                                    <input id="customerPhone" type="tel" wire:model="customerPhone" placeholder="8123456789 0"
+                                           class="w-full flex-1 rounded-r-md border border-zinc-200 bg-zinc-50 px-3 py-2.5 font-mono text-sm text-zinc-900 placeholder-zinc-300 outline-none transition focus:border-[#FF6B00] focus:bg-white focus:ring-2 focus:ring-[#FF6B00]/15" />
+                                </div>
+                                <flux:error name="customerPhone" class="mt-1 text-xs text-red-500" />
+                            </div>
+                            <div>
+                                <label class="mb-1.5 block text-xs font-medium text-zinc-500" for="customerEmail">Email <span class="text-zinc-300">(opsional)</span></label>
+                                <input id="customerEmail" type="email" wire:model="customerEmail" placeholder="nama@email.com"
+                                       class="w-full rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm text-zinc-900 placeholder-zinc-300 outline-none transition focus:border-[#FF6B00] focus:bg-white focus:ring-2 focus:ring-[#FF6B00]/15" />
+                                <flux:error name="customerEmail" class="mt-1 text-xs text-red-500" />
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-            <flux:field label="Email (opsional)">
-                <flux:input type="email" wire:model="customerEmail" />
-                <flux:error name="customerEmail" />
-            </flux:field>
+                {{-- Metode Pengiriman --}}
+                <section class="rounded-lg border border-zinc-200 bg-white p-6">
+                    <h2 class="mb-4 text-base font-bold text-zinc-900">Metode Pengambilan</h2>
+                    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                        <label class="cursor-pointer">
+                            <input type="radio" value="PICKUP" wire:model.live="deliveryMethod" class="peer sr-only" />
+                            <div class="flex h-full flex-col gap-1 rounded-md border bg-zinc-50 p-4 transition-all
+                                peer-checked:border-[#FF6B00] peer-checked:bg-[#FFF7ED] peer-checked:ring-2 peer-checked:ring-[#FF6B00]/25">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-bold text-zinc-900">Ambil di Workshop</span>
+                                    <flux:icon.building-storefront class="h-4 w-4 {{ $deliveryMethod === 'PICKUP' ? 'text-[#E65100]' : 'text-zinc-400' }}" />
+                                </div>
+                                <p class="text-xs text-zinc-500">Sibang Kaja, Bali</p>
+                                <span class="mt-auto pt-1 font-mono text-xs font-medium text-emerald-600">Gratis</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" value="COURIER" wire:model.live="deliveryMethod" class="peer sr-only" />
+                            <div class="flex h-full flex-col gap-1 rounded-md border bg-zinc-50 p-4 transition-all
+                                peer-checked:border-[#FF6B00] peer-checked:bg-[#FFF7ED] peer-checked:ring-2 peer-checked:ring-[#FF6B00]/25">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-bold text-zinc-900">Kirim via Kurir</span>
+                                    <flux:icon.truck class="h-4 w-4 {{ $deliveryMethod === 'COURIER' ? 'text-[#E65100]' : 'text-zinc-400' }}" />
+                                </div>
+                                <p class="text-xs text-zinc-500">Area Bali &amp; sekitarnya</p>
+                                <span class="mt-auto pt-1 font-mono text-xs text-zinc-400">Ongkir via WA</span>
+                            </div>
+                        </label>
+                    </div>
 
-            <flux:field label="Metode Pengambilan">
-                <flux:radio.group wire:model.live="deliveryMethod" variant="segmented">
-                    <flux:radio value="PICKUP" label="Ambil di Workshop" />
-                    <flux:radio value="COURIER" label="Kirim via Kurir" />
-                </flux:radio.group>
-            </flux:field>
+                    @if($deliveryMethod === 'COURIER')
+                        <div class="mt-4">
+                            <label class="mb-1.5 block text-xs font-medium text-zinc-500" for="deliveryAddress">Alamat Pengiriman</label>
+                            <textarea id="deliveryAddress" wire:model="deliveryAddress" rows="3" placeholder="Nama jalan, no. rumah, kecamatan, kabupaten"
+                                      class="w-full rounded-md border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-900 placeholder-zinc-300 outline-none transition focus:border-[#FF6B00] focus:bg-white focus:ring-2 focus:ring-[#FF6B00]/15"></textarea>
+                            <flux:error name="deliveryAddress" class="mt-1 text-xs text-red-500" />
+                        </div>
+                    @endif
+                </section>
 
-            @if($deliveryMethod === 'COURIER')
-                <flux:field label="Alamat Pengiriman">
-                    <flux:textarea wire:model="deliveryAddress" rows="3" />
-                    <flux:error name="deliveryAddress" />
-                </flux:field>
-            @endif
+                {{-- Catatan --}}
+                <section class="rounded-lg border border-zinc-200 bg-white p-6">
+                    <label class="mb-1.5 block text-xs font-medium text-zinc-500" for="notes">Catatan <span class="text-zinc-300">(opsional)</span></label>
+                    <textarea id="notes" wire:model="notes" rows="2" placeholder="Catatan tambahan untuk tim produksi..."
+                              class="w-full rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm text-zinc-900 placeholder-zinc-300 outline-none transition focus:border-[#FF6B00] focus:bg-white focus:ring-2 focus:ring-[#FF6B00]/15"></textarea>
+                    <flux:error name="notes" class="mt-1 text-xs text-red-500" />
+                </section>
+            </div>
 
-            <flux:field label="Catatan (opsional)">
-                <flux:textarea wire:model="notes" rows="3" placeholder="Catatan tambahan untuk CS..." />
-            </flux:field>
+            {{-- RIGHT : Summary --}}
+            <div class="md:col-span-5">
+                <div class="rounded-lg border border-zinc-200 bg-white p-6 md:sticky md:top-24">
+                    <h2 class="mb-5 border-b border-zinc-100 pb-3 text-base font-bold text-zinc-900">Ringkasan Pesanan</h2>
 
-            @if(session('error'))
-                <flux:callout color="danger">{{ session('error') }}</flux:callout>
-            @endif
+                    {{-- Item list --}}
+                    <div class="mb-5 flex flex-col gap-4">
+                        @foreach($this->cartItems as $item)
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex min-w-0 gap-3">
+                                    <div class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md border border-zinc-200 bg-zinc-100">
+                                        @if($img = \App\Models\Product::find($item['product_id'])?->getFirstMediaUrl('images', 'thumb'))
+                                            <img src="{{ $img }}" alt="" class="h-full w-full object-cover" loading="lazy" />
+                                        @else
+                                            <flux:icon.document-text class="h-5 w-5 text-zinc-300" />
+                                        @endif
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h3 class="truncate text-sm font-bold text-zinc-900">{{ $item['product_name'] }}</h3>
+                                        @if($item['variant_name'] ?? null)
+                                            <p class="mt-0.5 text-xs text-zinc-500">{{ $item['variant_name'] }}</p>
+                                        @endif
+                                        @if(($item['width_cm'] ?? null))
+                                            <div class="mt-0.5 flex items-center gap-1 text-zinc-400">
+                                                <flux:icon.viewfinder-circle class="h-3 w-3" />
+                                                <span class="font-mono text-xs">{{ $item['width_cm'] }} × {{ $item['height_cm'] }} cm</span>
+                                            </div>
+                                        @endif
+                                        <p class="mt-0.5 font-mono text-xs text-zinc-500">Qty {{ $item['quantity'] }}</p>
+                                    </div>
+                                </div>
+                                <span class="whitespace-nowrap font-mono text-sm font-medium text-zinc-900">Rp {{ number_format($item['subtotal'], 0, ',', '.') }}</span>
+                            </div>
+                        @endforeach
+                    </div>
 
-            <flux:button variant="primary" class="w-full" wire:click="submitOrder" icon="chat-bubble-bottom-center-text">
-                Pesan Sekarang via WhatsApp
-            </flux:button>
-            <flux:text class="text-center text-xs">Anda akan diarahkan ke WhatsApp untuk konfirmasi pemesanan.</flux:text>
-        </flux:card>
+                    {{-- Totals --}}
+                    <div class="mb-5 flex flex-col gap-2">
+                        <div class="flex justify-between text-sm text-zinc-500">
+                            <span>Subtotal</span>
+                            <span class="font-mono">Rp {{ number_format($this->cartTotal, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="flex justify-between text-sm text-zinc-500">
+                            <span>Ongkos Kirim</span>
+                            <span class="font-mono">{{ $deliveryMethod === 'COURIER' ? 'via WhatsApp' : 'Gratis' }}</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-5 flex items-end justify-between border-t border-zinc-200 pt-3">
+                        <span class="text-base font-bold text-zinc-900">Total</span>
+                        <span class="font-mono text-[26px] font-bold text-zinc-900">
+                            Rp {{ number_format($this->cartTotal, 0, ',', '.') }}
+                        </span>
+                    </div>
+
+                    @if(session('error'))
+                        <div class="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    <button wire:click="submitOrder"
+                            class="flex w-full items-center justify-center gap-2 rounded-md bg-[#16A34A] px-6 py-3.5 text-sm font-bold text-white shadow-[0_4px_10px_rgba(22,163,74,0.25)] transition hover:bg-[#15803D]">
+                        <flux:icon.chat-bubble-oval-left-ellipsis class="h-4 w-4" />
+                        Pesan Sekarang via WhatsApp
+                    </button>
+                    <p class="mt-2.5 text-center text-xs text-zinc-400">
+                        Anda akan diarahkan ke WhatsApp untuk konfirmasi pesanan.
+                    </p>
+                </div>
+            </div>
+        </div>
     @endif
 </div>

@@ -19,10 +19,38 @@
 
                 <div class="flex items-center gap-2">
                     <livewire:frontend.cart-drawer />
-                    <a href="{{ route('catalog') }}" wire:navigate
-                       class="hidden rounded-md bg-[#FF6B00] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#E65100] sm:inline-block">
-                        Quick Order
-                    </a>
+                    @auth
+                        <flux:dropdown position="bottom" align="end">
+                            <flux:button variant="ghost" size="sm">
+                                <span class="flex items-center gap-1.5 text-sm font-medium">
+                                    <flux:icon.user class="h-4 w-4" />
+                                    {{ str(auth()->user()->name)->explode(' ')->first() }}
+                                </span>
+                            </flux:button>
+                            <flux:menu>
+                                <flux:menu.item href="{{ route('dashboard') }}" icon="squares-2x2" wire:navigate>Dashboard</flux:menu.item>
+                                <flux:menu.item href="{{ url('/admin') }}" icon="cog-6-tooth">Panel Admin</flux:menu.item>
+                                <flux:menu.separator />
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <flux:menu.item type="submit" icon="arrow-right-start-on-rectangle">Keluar</flux:menu.item>
+                                </flux:menu>
+                            </flux:menu>
+                        </flux:dropdown>
+                    @else
+                        <a href="{{ route('login') }}"
+                           class="hidden rounded-md border border-zinc-200 px-3.5 py-2 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-50 sm:inline-block">
+                            Masuk
+                        </a>
+                        <a href="{{ route('register') }}"
+                           class="hidden rounded-md bg-[#FF6B00] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#E65100] sm:inline-block">
+                            Daftar
+                        </a>
+                        <a href="{{ route('catalog') }}" wire:navigate
+                           class="hidden rounded-md border border-zinc-200 px-3.5 py-2 text-xs font-semibold text-zinc-600 transition hover:bg-zinc-50 lg:inline-block">
+                            Quick Order
+                        </a>
+                    @endauth
                 </div>
             </div>
         </header>
