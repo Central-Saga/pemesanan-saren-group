@@ -41,7 +41,7 @@
                 <tfoot>
                     <tr>
                         <td colspan="2" class="py-2 font-semibold">Total</td>
-                        <td class="py-2 text-right font-bold text-indigo-600">Rp {{ number_format($this->cartTotal, 0, ',', '.') }}</td>
+                        <td class="py-2 text-right font-bold text-[#FF6B00]">Rp {{ number_format($this->cartTotal, 0, ',', '.') }}</td>
                     </tr>
                 </tfoot>
             </table>

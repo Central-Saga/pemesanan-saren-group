@@ -61,7 +61,7 @@
             </div>
             <div class="flex justify-between">
                 <flux:text>Subtotal (x{{ $quantity }})</flux:text>
-                <flux:heading class="font-bold text-indigo-600">Rp {{ $subtotal }}</flux:heading>
+                <flux:heading class="font-bold text-[#FF6B00]">Rp {{ $subtotal }}</flux:heading>
             </div>
         </flux:card>
     </div>

@@ -31,7 +31,7 @@
             </p>
             <div class="flex flex-wrap gap-3 pt-2">
                 <a href="{{ route('catalog') }}" wire:navigate
-                   class="inline-flex items-center gap-2 rounded-lg bg-zinc-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-zinc-800">
+                   class="inline-flex items-center gap-2 rounded-md bg-[#FF6B00] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#E65100]">
                     Pesan Cetak Custom
                     <flux:icon.arrow-right class="h-4 w-4" />
                 </a>
@@ -118,7 +118,7 @@
                     <div class="flex flex-1 flex-col p-4">
                         <span class="mb-2 self-start rounded-full px-2.5 py-0.5 text-xs font-medium
                             {{ $product->category === \App\Enums\ProductCategory::CUSTOM_SERVICE
-                                ? 'bg-indigo-50 text-indigo-700'
+                                ? 'bg-[#FFF7ED] text-[#E65100]'
                                 : 'bg-zinc-100 text-zinc-600' }}">
                             {{ $product->category->getLabel() }}
                         </span>
@@ -129,7 +129,7 @@
                                 <p class="text-xs text-zinc-400">Mulai dari</p>
                                 <p class="text-lg font-bold text-zinc-900">{{ $product->base_price_formatted }}</p>
                             </div>
-                            <span class="rounded-lg bg-zinc-900 px-3 py-1.5 text-xs font-bold text-white transition group-hover:bg-zinc-700">
+                            <span class="rounded-md bg-[#FF6B00] px-3 py-1.5 text-xs font-bold text-white transition group-hover:bg-[#E65100]">
                                 Pesan
                             </span>
                         </div>
@@ -151,7 +151,7 @@
                 ['icon' => 'truck', 'title' => 'Lacak & Ambil', 'desc' => 'Pantau status produksi sampai siap diambil atau dikirim.'],
             ] as $i => $step)
                 <div class="flex flex-col items-start rounded-xl border border-zinc-200 bg-white p-6">
-                    <span class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-900 text-sm font-bold text-white">{{ $i + 1 }}</span>
+                    <span class="flex h-10 w-10 items-center justify-center rounded-full bg-[#FF6B00] text-sm font-bold text-white">{{ $i + 1 }}</span>
                     <h3 class="mt-4 font-bold text-zinc-900">{{ $step['title'] }}</h3>
                     <p class="mt-1 text-sm text-zinc-500">{{ $step['desc'] }}</p>
                 </div>
@@ -168,7 +168,7 @@
                 <flux:input wire:model="trackInvoice" placeholder="Contoh: SRN-20260830-0001" icon="magnifying-glass" />
             </div>
             <button wire:click="goTrack"
-                    class="mt-4 inline-flex items-center gap-2 rounded-lg bg-zinc-900 px-6 py-2.5 text-sm font-bold text-white transition hover:bg-zinc-800">
+                    class="mt-4 inline-flex items-center gap-2 rounded-md bg-[#FF6B00] px-6 py-2.5 text-sm font-bold text-white transition hover:bg-[#E65100]">
                 <flux:icon.magnifying-glass class="h-4 w-4" />
                 Lacak
             </button>
@@ -193,11 +193,11 @@
             <h2 class="text-xl font-bold text-zinc-900">Hubungi Kami</h2>
             <p class="text-sm text-zinc-500">
                 <span class="font-semibold text-zinc-700">WhatsApp:</span>
-                <a href="{{ $waLink }}" class="text-indigo-600 hover:underline" target="_blank">+62 878-6004-2888</a>
+                <a href="{{ $waLink }}" class="text-[#FF6B00] underline" target="_blank">+62 878-6004-2888</a>
             </p>
             <p class="text-sm text-zinc-500">
                 <span class="font-semibold text-zinc-700">Email:</span>
-                <a href="mailto:sarengrup@gmail.com" class="text-indigo-600 hover:underline">sarengrup@gmail.com</a>
+                <a href="mailto:sarengrup@gmail.com" class="text-[#FF6B00] underline">sarengrup@gmail.com</a>
             </p>
             <p class="text-sm text-zinc-500">
                 <span class="font-semibold text-zinc-700">Instagram:</span> @cvsaren_grup

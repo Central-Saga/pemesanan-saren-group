@@ -66,7 +66,7 @@
             </div>
             <div class="flex justify-between">
                 <flux:text>Subtotal (x{{ $quantity }})</flux:text>
-                <flux:heading class="font-bold text-indigo-600">Rp {{ number_format($this->pricing['subtotal'], 0, ',', '.') }}</flux:heading>
+                <flux:heading class="font-bold text-[#FF6B00]">Rp {{ number_format($this->pricing['subtotal'], 0, ',', '.') }}</flux:heading>
             </div>
             <flux:text class="text-xs">Harga cutting: Die Cut +Rp 5.000/m², Kiss Cut +Rp 3.000/m², Lembaran gratis.</flux:text>
         </flux:card>

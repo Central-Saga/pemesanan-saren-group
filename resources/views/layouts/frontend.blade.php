@@ -20,7 +20,7 @@
                 <div class="flex items-center gap-2">
                     <livewire:frontend.cart-drawer />
                     <a href="{{ route('catalog') }}" wire:navigate
-                       class="hidden rounded-lg bg-zinc-900 px-4 py-2 text-xs font-bold text-white transition hover:bg-zinc-800 sm:inline-block">
+                       class="hidden rounded-md bg-[#FF6B00] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#E65100] sm:inline-block">
                         Quick Order
                     </a>
                 </div>

@@ -43,17 +43,17 @@
             <div class="mt-4 flex flex-wrap gap-2">
                 <button wire:click="$set('category', '')"
                         class="rounded-full border px-4 py-1.5 text-sm font-medium transition
-                            {{ $category === '' ? 'border-zinc-900 bg-zinc-900 text-white' : 'border-zinc-200 text-zinc-500 hover:bg-zinc-50' }}">
+                            {{ $category === '' ? 'border-[#FF6B00] bg-[#FF6B00] text-white' : 'border-zinc-200 text-zinc-500 hover:bg-zinc-50' }}">
                     Semua
                 </button>
                 <button wire:click="$set('category', 'CUSTOM_SERVICE')"
                         class="rounded-full border px-4 py-1.5 text-sm font-medium transition
-                            {{ $category === 'CUSTOM_SERVICE' ? 'border-zinc-900 bg-zinc-900 text-white' : 'border-zinc-200 text-zinc-500 hover:bg-zinc-50' }}">
+                            {{ $category === 'CUSTOM_SERVICE' ? 'border-[#FF6B00] bg-[#FF6B00] text-white' : 'border-zinc-200 text-zinc-500 hover:bg-zinc-50' }}">
                     Jasa Cetak
                 </button>
                 <button wire:click="$set('category', 'PHYSICAL_PRODUCT')"
                         class="rounded-full border px-4 py-1.5 text-sm font-medium transition
-                            {{ $category === 'PHYSICAL_PRODUCT' ? 'border-zinc-900 bg-zinc-900 text-white' : 'border-zinc-200 text-zinc-500 hover:bg-zinc-50' }}">
+                            {{ $category === 'PHYSICAL_PRODUCT' ? 'border-[#FF6B00] bg-[#FF6B00] text-white' : 'border-zinc-200 text-zinc-500 hover:bg-zinc-50' }}">
                     Kertas & ATK
                 </button>
             </div>
@@ -99,7 +99,7 @@
 
                         @if($product->is_custom_dimension)
                             <div class="mt-auto pt-4">
-                                <span class="inline-flex w-full items-center justify-center gap-1 rounded-lg bg-zinc-900 py-2 text-sm font-medium text-white transition group-hover:bg-zinc-700">
+                                <span class="inline-flex w-full items-center justify-center gap-1 rounded-sm bg-[#FF6B00] py-2 text-sm font-medium text-white transition group-hover:bg-[#E65100]">
                                     <flux:icon.calculator class="h-4 w-4" />
                                     Kalkulator Dimensi
                                 </span>

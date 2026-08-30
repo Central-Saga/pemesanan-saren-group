@@ -11,7 +11,7 @@
         <ol class="relative space-y-4 border-s border-zinc-200 ms-3">
             @foreach($this->timeline as $step)
                 <li class="ms-6">
-                    <span class="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full {{ $step['achieved'] ? 'bg-indigo-600 text-white' : 'bg-zinc-200 text-zinc-500' }}">
+                    <span class="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full {{ $step['achieved'] ? 'bg-[#FF6B00] text-white' : 'bg-zinc-200 text-zinc-500' }}">
                         @if($step['achieved'])
                             <flux:icon name="check" variant="micro" class="text-white" />
                         @endif
@@ -58,7 +58,7 @@
                             @if(!empty($item->width_cm))<div class="text-xs text-zinc-500">{{ $item->width_cm }} × {{ $item->height_cm }} cm ({{ $item->calculated_area }} m²)</div>@endif
                             @if($item->finishing_note)<div class="text-xs text-zinc-500">✂️ {{ $item->finishing_note }}</div>@endif
                             @if($item->design_file_path)
-                                <a href="{{ asset('storage/'.$item->design_file_path) }}" target="_blank" class="text-xs text-indigo-600 hover:underline">📎 File Desain</a>
+                                <a href="{{ asset('storage/'.$item->design_file_path) }}" target="_blank" class="text-xs text-[#FF6B00] underline">📎 File Desain</a>
                             @endif
                         </td>
                         <td class="py-2">{{ $item->quantity }}</td>
@@ -69,7 +69,7 @@
             <tfoot>
                 <tr>
                     <td colspan="2" class="py-2 font-semibold">Total</td>
-                    <td class="py-2 text-right font-bold text-indigo-600">{{ $order->total_amount_formatted }}</td>
+                    <td class="py-2 text-right font-bold text-[#FF6B00]">{{ $order->total_amount_formatted }}</td>
                 </tr>
             </tfoot>
         </table>

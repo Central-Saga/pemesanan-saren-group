@@ -3,7 +3,7 @@
         <flux:button variant="ghost" icon="shopping-cart">
             Keranjang
             @if($this->cartCount > 0)
-                <flux:badge color="indigo" inset="top right">{{ $this->cartCount }}</flux:badge>
+                <flux:badge color="orange" inset="top right">{{ $this->cartCount }}</flux:badge>
             @endif
         </flux:button>
 
@@ -32,7 +32,7 @@
                 <flux:separator />
                 <div class="flex items-center justify-between px-2 py-2">
                     <span class="text-sm font-medium text-zinc-900">Total</span>
-                    <span class="text-sm font-bold text-indigo-600">Rp {{ number_format($this->cartTotal, 0, ',', '.') }}</span>
+                    <span class="text-sm font-bold text-[#FF6B00]">Rp {{ number_format($this->cartTotal, 0, ',', '.') }}</span>
                 </div>
                 <div class="px-2 pb-2">
                     <flux:button variant="primary" class="w-full" href="{{ route('checkout') }}" wire:navigate>
