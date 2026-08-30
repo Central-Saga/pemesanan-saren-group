@@ -20,6 +20,9 @@ pest()->extend(TestCase::class)
 
 pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
+    ->beforeEach(function () {
+        $this->seed(ShieldSeeder::class);
+    })
     ->in('Filament');
 
 /*

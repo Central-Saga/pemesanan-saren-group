@@ -3,8 +3,7 @@
 namespace App\Filament\Resources\Products\Schemas;
 
 use App\Enums\ProductCategory;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -46,11 +45,11 @@ class ProductForm
                     ->label('Produk berdimensi (m²)'),
                 Toggle::make('requires_design_file')
                     ->label('Wajib upload file desain'),
-                FileUpload::make('image_path')
+                SpatieMediaLibraryFileUpload::make('images')
+                    ->collection('images')
                     ->image()
-                    ->disk('public')
-                    ->directory('products')
-                    ->imageEditor(),
+                    ->imageEditor()
+                    ->maxFiles(6),
             ]);
     }
 }

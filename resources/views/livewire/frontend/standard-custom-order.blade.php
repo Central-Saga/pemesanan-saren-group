@@ -7,6 +7,9 @@
 
 <div class="grid gap-8 lg:grid-cols-2">
     <div>
+        @if($product->getFirstMediaUrl('images', 'thumb'))
+            <img src="{{ $product->getFirstMediaUrl('images', 'thumb') }}" alt="{{ $product->name }}" class="mb-4 w-full rounded-xl border border-zinc-200 object-cover" />
+        @endif
         <flux:heading size="xl">{{ $product->name }}</flux:heading>
         <flux:text class="mt-1">{{ $product->description }}</flux:text>
 
@@ -47,6 +50,9 @@
     </div>
 
     <div>
+        @if($product->getFirstMediaUrl('images', 'thumb'))
+            <img src="{{ $product->getFirstMediaUrl('images', 'thumb') }}" alt="{{ $product->name }}" class="mb-4 w-full rounded-xl border border-zinc-200 object-cover" />
+        @endif
         <flux:card class="space-y-3">
             <flux:heading size="lg">Estimasi Harga</flux:heading>
             <div class="flex justify-between">

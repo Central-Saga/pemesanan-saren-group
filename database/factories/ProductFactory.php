@@ -19,7 +19,6 @@ class ProductFactory extends Factory
             'unit_label' => 'm2',
             'is_custom_dimension' => false,
             'requires_design_file' => false,
-            'image_path' => null,
         ];
     }
 }

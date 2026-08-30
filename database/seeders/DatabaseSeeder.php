@@ -20,7 +20,9 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        User::updateOrCreate(
+        $this->call(ShieldSeeder::class);
+
+        $admin = User::updateOrCreate(
             ['email' => 'admin@sarengroup.test'],
             [
                 'name' => 'Admin Saren Grup',
@@ -28,6 +30,7 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => now(),
             ],
         );
+        $admin->assignRole('super_admin');
 
         $this->call(ProductSeeder::class);
     }
