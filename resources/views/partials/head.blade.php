@@ -12,4 +12,6 @@
 @fonts
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-@fluxAppearance
+        <meta name="flux-appearance" content="light" />
+        <script>localStorage.setItem('flux.appearance', 'light');</script>
+        @fluxAppearance
