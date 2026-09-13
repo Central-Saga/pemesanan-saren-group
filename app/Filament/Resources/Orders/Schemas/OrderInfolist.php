@@ -27,6 +27,7 @@ class OrderInfolist
                             TextEntry::make('delivery_address')->placeholder('-')->columnSpanFull(),
                             TextEntry::make('total_amount')->money('IDR', locale: 'id'),
                             TextEntry::make('created_at')->dateTime('d M Y H:i'),
+                            TextEntry::make('tracking_number')->label('Nomor Resi')->placeholder('-'),
                             TextEntry::make('notes')->placeholder('-')->columnSpanFull(),
                         ]),
                     ]),

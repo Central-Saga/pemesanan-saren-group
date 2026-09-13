@@ -23,6 +23,17 @@
             @endforeach
         </ol>
     </flux:card>
+    @if($order->status === \App\Enums\OrderStatus::SHIPPED && $order->tracking_number)
+        <flux:card class="space-y-2">
+            <flux:heading size="lg">Pengiriman</flux:heading>
+            <div class="flex items-center gap-2 text-sm">
+                <flux:icon.truck class="h-4 w-4 text-zinc-500" />
+                <span class="text-zinc-500">Nomor Resi:</span>
+                <span class="font-mono font-bold text-zinc-900">{{ $order->tracking_number }}</span>
+            </div>
+        </flux:card>
+    @endif
+
 
     <flux:card class="space-y-3">
         <flux:heading size="lg">Data Pemesan</flux:heading>

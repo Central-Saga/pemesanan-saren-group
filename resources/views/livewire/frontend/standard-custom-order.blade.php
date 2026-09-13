@@ -40,10 +40,14 @@
                 <flux:field label="File Desain (PDF, TIFF, PSD, CDR, AI, PNG)">
                     <flux:input type="file" wire:model="artworkFile" />
                     <flux:error name="artworkFile" />
+                    <div wire:loading wire:target="artworkFile" class="mt-2 flex items-center gap-2 text-xs text-zinc-500">
+                        <flux:icon.arrow-path class="h-4 w-4 animate-spin" /> Mengunggah file...
+                    </div>
                 </flux:field>
             @endif
 
-            <flux:button variant="primary" class="w-full" wire:click="addToCart">
+            <flux:button variant="primary" class="w-full" wire:click="addToCart"
+                wire:loading.attr="disabled" wire:target="artworkFile">
                 Tambah ke Keranjang
             </flux:button>
         </div>

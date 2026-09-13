@@ -37,7 +37,7 @@ class StickerCalculator extends Component
     public function mount(Product $product): void
     {
         $this->product = $product;
-        $this->selectedVariant = $product->variants->first()?->name ?? '';
+        $this->selectedVariant = $product->variants->firstWhere('is_active', true)?->name ?? '';
     }
 
     #[Computed]

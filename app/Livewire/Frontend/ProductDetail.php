@@ -14,7 +14,9 @@ class ProductDetail extends Component
 
     public function mount(string $slug): void
     {
-        $this->product = Product::with('variants')->where('slug', $slug)->firstOrFail();
+        $this->product = Product::with(['variants' => fn ($q) => $q->where('is_active', true)])
+            ->where('slug', $slug)
+            ->firstOrFail();
     }
 
     public function render()

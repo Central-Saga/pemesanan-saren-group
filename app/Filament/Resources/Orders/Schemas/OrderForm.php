@@ -140,6 +140,9 @@ class OrderForm
                                 ->default(0)
                                 ->readOnly()
                                 ->dehydrated(true),
+                            TextInput::make('tracking_number')
+                                ->label('Nomor Resi')
+                                ->maxLength(50),
                             Textarea::make('notes')
                                 ->label('Catatan')
                                 ->columnSpanFull(),

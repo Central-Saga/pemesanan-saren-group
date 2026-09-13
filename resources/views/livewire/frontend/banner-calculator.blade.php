@@ -145,6 +145,9 @@
                             <input type="file" wire:model="artworkFile" class="hidden" accept=".pdf,.tiff,.tif,.cdr,.psd,.ai,.zip,.rar,.jpg,.jpeg,.png" />
                         </label>
                         <flux:error name="artworkFile" class="text-xs text-red-600" />
+                        <div wire:loading wire:target="artworkFile" class="mt-2 flex items-center gap-2 text-xs text-zinc-500">
+                            <flux:icon.arrow-path class="h-4 w-4 animate-spin" /> Mengunggah file...
+                        </div>
                     </div>
                 @endif
             </div>
@@ -158,6 +161,7 @@
                     </span>
                 </div>
                 <button wire:click="addToCart"
+                        wire:loading.attr="disabled" wire:target="artworkFile"
                         class="mt-3.5 flex w-full items-center justify-center gap-2 rounded-md bg-[#16A34A] py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#15803D]">
                     <flux:icon.shopping-cart class="h-4 w-4" />
                     Tambah ke Keranjang

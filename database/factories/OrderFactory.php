@@ -20,6 +20,7 @@ class OrderFactory extends Factory
             'total_amount' => fake()->numberBetween(10000, 5000000),
             'status' => OrderStatus::PENDING_PAYMENT->value,
             'notes' => null,
+            'tracking_number' => null,
         ];
     }
 }

@@ -1,5 +1,5 @@
 @php
-    $waLink = 'https://wa.me/6287860042888?text=' . urlencode('Halo Admin Percetakan CV. Saren Grup! Saya mau konfirmasi pesanan ' . $order->invoice_number . ' a/n ' . $order->customer_name . '. Matur Suksma!');
+    $waLink = app(\App\Services\WhatsAppService::class)->generateOrderSubmissionUrl($order);
 @endphp
 
 <div class="mx-auto max-w-2xl">

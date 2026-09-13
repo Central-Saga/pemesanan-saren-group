@@ -4,6 +4,7 @@ use App\Livewire\Frontend\CheckoutPage;
 use App\Livewire\Frontend\OrderSuccess;
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\WhatsAppService;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 
@@ -48,7 +49,9 @@ it('creates order, persists it, and shows success page', function () {
         ->and(session('cart'))->toBeNull();
 
     Livewire::test(OrderSuccess::class, ['invoice' => $order->invoice_number])
-        ->assertOk();
+        ->assertOk()
+        ->assertSee('wa.me/'.WhatsAppService::CS_NUMBER)
+        ->assertSee($order->invoice_number);
 });
 
 it('requires delivery address for courier delivery', function () {

@@ -41,6 +41,18 @@ class ProductSeeder extends Seeder
                 ['price_diff' => $priceDiff, 'is_active' => true],
             );
         }
+
+        if ($product->getMedia('images')->isEmpty()) {
+            $imagePath = $this->dummyImagePath($slug);
+            if (is_file($imagePath)) {
+                $product->addMedia($imagePath)->preservingOriginal()->toMediaCollection('images');
+            }
+        }
+    }
+
+    private function dummyImagePath(string $slug): string
+    {
+        return database_path("seeders/dummy-images/{$slug}.jpg");
     }
 
     public function run(): void

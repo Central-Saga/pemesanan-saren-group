@@ -24,6 +24,7 @@ class Order extends Model
         'total_amount',
         'status',
         'notes',
+        'tracking_number',
     ];
 
     protected function casts(): array
@@ -38,6 +39,7 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+
     }
 
     public function getStatusLabelAttribute(): string

@@ -1,6 +1,5 @@
 @php
-    $waNumber = '6287860042888';
-    $waLink = 'https://wa.me/' . $waNumber;
+    $waLink = 'https://wa.me/'.\App\Services\WhatsAppService::CS_NUMBER;
     $featured = \App\Models\Product::query()
         ->with('media')
         ->where('category', \App\Enums\ProductCategory::CUSTOM_SERVICE)
@@ -45,19 +44,25 @@
 
         <div class="flex-1">
             <div class="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100">
-                {{-- Hero image: produk pertama dengan media, atau placeholder --}}
-                @php $heroProduct = $featured->first(fn ($p) => $p->getFirstMediaUrl('images')); @endphp
-                @if($heroProduct)
-                    <img src="{{ $heroProduct->getFirstMediaUrl('images') }}"
-                         alt="Workshop CV. Saren Grup"
+                {{-- Hero image: Workshop CV. Saren Grup --}}
+                @if(file_exists(public_path('images/hero-workshop.jpg')))
+                    <img src="{{ asset('images/hero-workshop.jpg') }}"
+                         alt="Workshop Percetakan Modern CV. Saren Grup Bali"
                          class="absolute inset-0 h-full w-full object-cover" />
                 @else
-                    <div class="flex h-full w-full items-center justify-center">
-                        <div class="text-center text-zinc-400">
-                            <flux:icon.printer class="mx-auto h-16 w-16" />
-                            <p class="mt-2 text-sm">Percetakan Digital Modern</p>
+                    @php $heroProduct = $featured->first(fn ($p) => $p->getFirstMediaUrl('images')); @endphp
+                    @if($heroProduct)
+                        <img src="{{ $heroProduct->getFirstMediaUrl('images') }}"
+                             alt="Workshop CV. Saren Grup"
+                             class="absolute inset-0 h-full w-full object-cover" />
+                    @else
+                        <div class="flex h-full w-full items-center justify-center">
+                            <div class="text-center text-zinc-400">
+                                <flux:icon.printer class="mx-auto h-16 w-16" />
+                                <p class="mt-2 text-sm">Percetakan Digital Modern</p>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 @endif
             </div>
         </div>
