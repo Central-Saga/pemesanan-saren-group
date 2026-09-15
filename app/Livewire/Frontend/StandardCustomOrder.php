@@ -3,6 +3,7 @@
 namespace App\Livewire\Frontend;
 
 use App\Models\Product;
+use App\Rules\ArtworkMime;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -20,7 +21,7 @@ class StandardCustomOrder extends Component
 
     public ?string $orderDetails = null;
 
-    #[Validate('nullable|file|max:51200|mimes:pdf,tiff,tif,jpg,jpeg,png,zip,rar,cdr,psd,ai')]
+    #[Validate(['nullable', 'file', 'max:51200', new ArtworkMime, 'mimes:pdf,tiff,tif,jpg,jpeg,png,zip,rar,cdr,psd,ai'])]
     public $artworkFile;
 
     private const MIN_ORDER = [

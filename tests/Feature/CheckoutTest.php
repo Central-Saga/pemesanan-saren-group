@@ -74,6 +74,8 @@ it('requires delivery address for courier delivery', function () {
 it('persists uploaded artwork path from cart to order item', function () {
     $product = Product::factory()->create();
 
+    Storage::disk('public')->put('artworks/tmp/test.pdf', '%PDF-1.4 fake body');
+
     seedCart($product, [
         'quantity' => 1,
         'unit_price' => 10000,
@@ -88,7 +90,9 @@ it('persists uploaded artwork path from cart to order item', function () {
         ->call('submitOrder')
         ->assertHasNoErrors();
 
-    expect(Order::first()->items->first()->design_file_path)->toBe('artworks/tmp/test.pdf');
+    $order = Order::first();
+
+    expect($order->items->first()->design_file_path)->toBe('artworks/orders/'.$order->id.'/test.pdf');
 });
 
 it('validates malformed phone number', function () {

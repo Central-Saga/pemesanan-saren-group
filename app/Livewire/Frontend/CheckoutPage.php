@@ -6,6 +6,8 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Services\InvoiceService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
@@ -105,7 +107,7 @@ class CheckoutPage extends Component
                     'quantity' => $item['quantity'],
                     'unit_price' => $item['unit_price'],
                     'subtotal' => $item['subtotal'],
-                    'design_file_path' => $item['design_file_path'] ?? null,
+                    'design_file_path' => $this->moveArtworkToOrder($item['design_file_path'] ?? null, $order->id, $order->invoice_number),
                     'finishing_note' => $item['finishing_note'] ?? null,
                 ]);
             }
@@ -121,6 +123,40 @@ class CheckoutPage extends Component
         $this->redirectRoute('order.success', ['invoice' => $order->invoice_number]);
     }
 
+    /**
+     * Move an artwork out of the temporary upload folder into the order's
+     * permanent folder. Returns the new path, or null when there is nothing to
+     * move or the move failed (the order itself must never be blocked by a
+     * missing/undownloadable artwork file).
+     */
+    protected function moveArtworkToOrder(?string $path, int $orderId, string $invoiceNumber): ?string
+    {
+        if (blank($path)) {
+            return null;
+        }
+
+        $disk = Storage::disk('public');
+
+        if (! $disk->exists($path)) {
+            Log::warning("Artwork move failed for order {$invoiceNumber} (file missing: {$path}).");
+
+            return null;
+        }
+
+        $newPath = 'artworks/orders/'.$orderId.'/'.basename($path);
+
+        try {
+            if (! $disk->move($path, $newPath)) {
+                throw new \RuntimeException("Storage::move returned false for {$path}.");
+            }
+        } catch (\Throwable $e) {
+            Log::warning("Artwork move failed for order {$invoiceNumber} ({$e->getMessage()}).");
+
+            return null;
+        }
+
+        return $newPath;
+    }
 
     public function render()
     {

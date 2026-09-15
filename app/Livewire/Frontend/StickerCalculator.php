@@ -3,6 +3,7 @@
 namespace App\Livewire\Frontend;
 
 use App\Models\Product;
+use App\Rules\ArtworkMime;
 use App\Services\PricingCalculatorService;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
@@ -25,7 +26,7 @@ class StickerCalculator extends Component
 
     public string $cuttingMethod = 'lembaran';
 
-    #[Validate('nullable|file|max:51200|mimes:pdf,tiff,tif,jpg,jpeg,png,zip,rar,cdr,psd,ai')]
+    #[Validate(['nullable', 'file', 'max:51200', new ArtworkMime, 'mimes:pdf,tiff,tif,jpg,jpeg,png,zip,rar,cdr,psd,ai'])]
     public $artworkFile;
 
     private const CUTTING_PRICE = [
