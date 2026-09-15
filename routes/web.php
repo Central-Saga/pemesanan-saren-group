@@ -3,6 +3,7 @@
 use App\Livewire\Frontend\CartDrawer;
 use App\Livewire\Frontend\CheckoutPage;
 use App\Livewire\Frontend\HomePage;
+use App\Livewire\Frontend\MyOrders;
 use App\Livewire\Frontend\OrderSuccess;
 use App\Livewire\Frontend\OrderTracker;
 use App\Livewire\Frontend\ProductCatalog;
@@ -19,6 +20,7 @@ Route::get('/track/{invoice}', OrderTracker::class)->name('order.track');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::get('pesanan', MyOrders::class)->name('orders.my');
 });
 
 require __DIR__.'/settings.php';

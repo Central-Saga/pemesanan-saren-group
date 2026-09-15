@@ -32,6 +32,14 @@ class CheckoutPage extends Component
     #[Validate('nullable|string|max:2000')]
     public ?string $notes = null;
 
+    public function mount(): void
+    {
+        if (auth()->check()) {
+            $this->customerName = auth()->user()->name;
+            $this->customerEmail ??= auth()->user()->email;
+        }
+    }
+
     #[Computed]
     public function cartItems(): array
     {
@@ -74,6 +82,7 @@ class CheckoutPage extends Component
 
         $order = DB::transaction(function () use ($cart, $invoiceService) {
             $order = Order::create([
+                'user_id' => auth()->id(),
                 'invoice_number' => $invoiceService->generate(),
                 'customer_name' => $this->customerName,
                 'customer_phone' => $this->customerPhone,
@@ -111,6 +120,7 @@ class CheckoutPage extends Component
         // follow-up button instead of being force-redirected out of the app.
         $this->redirectRoute('order.success', ['invoice' => $order->invoice_number]);
     }
+
 
     public function render()
     {

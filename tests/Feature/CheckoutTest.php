@@ -4,6 +4,7 @@ use App\Livewire\Frontend\CheckoutPage;
 use App\Livewire\Frontend\OrderSuccess;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use App\Services\WhatsAppService;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
@@ -45,6 +46,7 @@ it('creates order, persists it, and shows success page', function () {
         ->and($order->customer_name)->toBe('Wayan Suardana')
         ->and($order->total_amount)->toBe(25000)
         ->and($order->status->value)->toBe('PENDING_PAYMENT')
+        ->and($order->user_id)->toBeNull()
         ->and($order->items)->toHaveCount(1)
         ->and(session('cart'))->toBeNull();
 
@@ -101,4 +103,31 @@ it('validates malformed phone number', function () {
         ->assertHasErrors('customerPhone');
 
     expect(Order::count())->toBe(0);
+});
+
+it('attaches user_id and prefills customer details when authenticated', function () {
+    $user = User::factory()->create([
+        'name' => 'Made Developer',
+        'email' => 'made@example.com',
+    ]);
+
+    $product = Product::factory()->create([
+        'base_price' => 50000,
+    ]);
+
+    seedCart($product, ['unit_price' => 50000, 'subtotal' => 50000]);
+
+    $this->actingAs($user);
+
+    Livewire::test(CheckoutPage::class)
+        ->assertSet('customerName', 'Made Developer')
+        ->assertSet('customerEmail', 'made@example.com')
+        ->set('customerPhone', '081234567890')
+        ->set('deliveryMethod', 'PICKUP')
+        ->call('submitOrder')
+        ->assertHasNoErrors();
+
+    $order = Order::latest()->first();
+    expect($order->user_id)->toBe($user->id)
+        ->and($order->customer_name)->toBe('Made Developer');
 });

@@ -20,6 +20,7 @@ class ProductSeeder extends Seeder
         ?float $minSizeM2 = null,
         string $description = '',
         array $variants = [],
+        ?string $image = null,
     ): void {
         $product = Product::updateOrCreate(
             ['slug' => $slug],
@@ -42,17 +43,17 @@ class ProductSeeder extends Seeder
             );
         }
 
-        if ($product->getMedia('images')->isEmpty()) {
-            $imagePath = $this->dummyImagePath($slug);
-            if (is_file($imagePath)) {
-                $product->addMedia($imagePath)->preservingOriginal()->toMediaCollection('images');
+        $existing = $product->getFirstMedia('images');
+        $isPlaceholder = $existing !== null && $existing->file_name === '480.jpeg';
+        if ($image !== null && ($existing === null || $isPlaceholder)) {
+            $imagePath = public_path("images/products/{$image}");
+            if (file_exists($imagePath)) {
+                $product->clearMediaCollection('images');
+                $product->addMedia($imagePath)
+                    ->preservingOriginal()
+                    ->toMediaCollection('images');
             }
         }
-    }
-
-    private function dummyImagePath(string $slug): string
-    {
-        return database_path("seeders/dummy-images/{$slug}.jpg");
     }
 
     public function run(): void
@@ -72,6 +73,7 @@ class ProductSeeder extends Seeder
                 'Flex China' => 0,
                 'Flex Korea' => 15000,
             ],
+            image: 'banner-spanduk.jpg',
         );
 
         $this->make(
@@ -90,6 +92,7 @@ class ProductSeeder extends Seeder
                 'Bontax/Chromo' => -5000,
                 'Transparan' => 10000,
             ],
+            image: 'stiker-custom.jpg',
         );
 
         $this->make(
@@ -105,6 +108,7 @@ class ProductSeeder extends Seeder
                 'Laminasi Doff 2 Sisi' => 15000,
                 'Laminasi Glossy 2 Sisi' => 15000,
             ],
+            image: 'kartu-nama.jpg',
         );
 
         $this->make(
@@ -115,6 +119,7 @@ class ProductSeeder extends Seeder
             'pcs',
             requiresDesignFile: true,
             description: 'Undangan pernikahan, upacara adat Bali, ulang tahun/event. Minimum order 50 pcs.',
+            image: 'kartu-undangan.jpg',
         );
 
         $this->make(
@@ -125,6 +130,7 @@ class ProductSeeder extends Seeder
             'pcs',
             requiresDesignFile: true,
             description: 'Payung lipat/standar sablon logo 1-2 sisi. Minimum order 12 pcs. Wajib upload file vektor.',
+            image: 'payung-sablon.jpg',
         );
 
         $this->make(
@@ -135,6 +141,7 @@ class ProductSeeder extends Seeder
             'pcs',
             requiresDesignFile: true,
             description: 'Jam dinding quartz diameter 25cm dengan custom cetak foto/desain.',
+            image: 'jam-dinding-custom.jpg',
         );
 
         // Category B: Produk Fisik ATK
@@ -151,13 +158,28 @@ class ProductSeeder extends Seeder
                 'Yellow' => 0,
                 'Black' => 0,
             ],
+            image: 'tinta-printer.jpg',
         );
 
-        $this->make('map-kertas', 'Map Kertas', ProductCategory::PHYSICAL_PRODUCT, 3000, 'pcs',
-            description: 'Map folio kertas buffalo/stopmap untuk arsip dokumen.');
+        $this->make(
+            'map-kertas',
+            'Map Kertas',
+            ProductCategory::PHYSICAL_PRODUCT,
+            3000,
+            'pcs',
+            description: 'Map folio kertas buffalo/stopmap untuk arsip dokumen.',
+            image: 'map-kertas.jpg',
+        );
 
-        $this->make('map-kancing-plastik', 'Map Kancing Plastik', ProductCategory::PHYSICAL_PRODUCT, 8000, 'pcs',
-            description: 'Map plastik transparan dengan penutup kancing 1/2.');
+        $this->make(
+            'map-kancing-plastik',
+            'Map Kancing Plastik',
+            ProductCategory::PHYSICAL_PRODUCT,
+            8000,
+            'pcs',
+            description: 'Map plastik transparan dengan penutup kancing 1/2.',
+            image: 'map-kancing-plastik.jpg',
+        );
 
         $this->make(
             'bingkai-foto',
@@ -178,27 +200,77 @@ class ProductSeeder extends Seeder
                 'A4' => 25000,
                 'A3' => 40000,
             ],
+            image: 'bingkai-foto.jpg',
         );
 
-        $this->make('materai-10000', 'Materai 10.000', ProductCategory::PHYSICAL_PRODUCT, 11000, 'keping',
-            description: 'Materai tempel resmi Pos Indonesia 10.000 asli.');
+        $this->make(
+            'materai-10000',
+            'Materai 10.000',
+            ProductCategory::PHYSICAL_PRODUCT,
+            11000,
+            'keping',
+            description: 'Materai tempel resmi Pos Indonesia 10.000 asli.',
+            image: 'materai-10000.jpg',
+        );
 
-        $this->make('kertas-print-a4', 'Kertas Print A4', ProductCategory::PHYSICAL_PRODUCT, 51000, 'rim',
-            description: 'Kertas HVS 70/80 gsm, isi 500 lembar.');
+        $this->make(
+            'kertas-print-a4',
+            'Kertas Print A4',
+            ProductCategory::PHYSICAL_PRODUCT,
+            51000,
+            'rim',
+            description: 'Kertas HVS 70/80 gsm, isi 500 lembar.',
+            image: 'kertas-print-a4.jpg',
+        );
 
-        $this->make('kertas-print-f4', 'Kertas Print F4 (Folio)', ProductCategory::PHYSICAL_PRODUCT, 50000, 'rim',
-            description: 'Kertas HVS 70/80 gsm ukuran Folio.');
+        $this->make(
+            'kertas-print-f4',
+            'Kertas Print F4 (Folio)',
+            ProductCategory::PHYSICAL_PRODUCT,
+            50000,
+            'rim',
+            description: 'Kertas HVS 70/80 gsm ukuran Folio.',
+            image: 'kertas-print-f4.jpg',
+        );
 
-        $this->make('kertas-print-a3', 'Kertas Print A3', ProductCategory::PHYSICAL_PRODUCT, 50000, 'rim',
-            description: 'Kertas HVS ukuran A3.');
+        $this->make(
+            'kertas-print-a3',
+            'Kertas Print A3',
+            ProductCategory::PHYSICAL_PRODUCT,
+            50000,
+            'rim',
+            description: 'Kertas HVS ukuran A3.',
+            image: 'kertas-print-a3.jpg',
+        );
 
-        $this->make('kertas-print-a5', 'Kertas Print A5', ProductCategory::PHYSICAL_PRODUCT, 60000, 'rim',
-            description: 'Kertas HVS ukuran A5.');
+        $this->make(
+            'kertas-print-a5',
+            'Kertas Print A5',
+            ProductCategory::PHYSICAL_PRODUCT,
+            60000,
+            'rim',
+            description: 'Kertas HVS ukuran A5.',
+            image: 'kertas-print-a5.jpg',
+        );
 
-        $this->make('paket-atk', 'Paket Alat Tulis Kantor', ProductCategory::PHYSICAL_PRODUCT, 15000, 'set',
-            description: 'Set kombinasi: Pulpen Gel, Pensil 2B, dan Penghapus bebas debu.');
+        $this->make(
+            'paket-atk',
+            'Paket Alat Tulis Kantor',
+            ProductCategory::PHYSICAL_PRODUCT,
+            15000,
+            'set',
+            description: 'Set kombinasi: Pulpen Gel, Pensil 2B, dan Penghapus bebas debu.',
+            image: 'paket-atk.jpg',
+        );
 
-        $this->make('lakban-bening', 'Lakban Bening Besar', ProductCategory::PHYSICAL_PRODUCT, 12000, 'roll',
-            description: 'Lakban isolasi bening tebal 48mm untuk packing.');
+        $this->make(
+            'lakban-bening',
+            'Lakban Bening Besar',
+            ProductCategory::PHYSICAL_PRODUCT,
+            12000,
+            'roll',
+            description: 'Lakban isolasi bening tebal 48mm untuk packing.',
+            image: 'lakban-bening.jpg',
+        );
     }
 }

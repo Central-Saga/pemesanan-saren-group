@@ -19,7 +19,7 @@ class BannerCalculator extends Component
 
     public float $heightCm = 100;
 
-    public int $quantity = 1;
+    public string|int $quantity = 1;
 
     public ?string $selectedVariant = '';
 
@@ -66,7 +66,7 @@ class BannerCalculator extends Component
             'width_cm' => $this->widthCm,
             'height_cm' => $this->heightCm,
             'calculated_area' => $pricing['billable_area_m2'],
-            'quantity' => $this->quantity,
+            'quantity' => (int) $this->quantity,
             'unit_price' => $pricing['unit_price'],
             'subtotal' => $pricing['subtotal'],
             'finishing_note' => $this->finishing,

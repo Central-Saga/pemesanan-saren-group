@@ -28,8 +28,11 @@
                                 </span>
                             </flux:button>
                             <flux:menu>
+                                <flux:menu.item href="{{ route('orders.my') }}" icon="clipboard-document-list" wire:navigate>Pesanan Saya</flux:menu.item>
                                 <flux:menu.item href="{{ route('dashboard') }}" icon="squares-2x2" wire:navigate>Dashboard</flux:menu.item>
-                                <flux:menu.item href="{{ url('/admin') }}" icon="cog-6-tooth">Panel Admin</flux:menu.item>
+                                @if(auth()->user()->hasRole('super_admin'))
+                                    <flux:menu.item href="{{ url('/admin') }}" icon="cog-6-tooth">Panel Admin</flux:menu.item>
+                                @endif
                                 <flux:menu.separator />
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf

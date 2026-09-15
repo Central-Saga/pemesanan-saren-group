@@ -6,6 +6,7 @@ use App\Enums\DeliveryMethod;
 use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
@@ -15,6 +16,7 @@ class Order extends Model
     use HasFactory, LogsActivity;
 
     protected $fillable = [
+        'user_id',
         'invoice_number',
         'customer_name',
         'customer_phone',
@@ -40,6 +42,11 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
 
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function getStatusLabelAttribute(): string
